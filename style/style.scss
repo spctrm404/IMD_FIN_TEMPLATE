@@ -1,0 +1,66 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 50rem;
+  height: 100svh;
+  overflow-y: hidden;
+  margin: 0;
+}
+
+canvas {
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+ol {
+  margin: 0;
+}
+
+.section {
+  background-color: oklch(0.9 0.15 0);
+  position: relative;
+  height: 100svh;
+  &-canvas {
+    background-color: oklch(0.9 0.15 240);
+  }
+}
+
+.container {
+  background-color: oklch(0.6 0.15 0);
+  max-width: 60rem;
+  height: calc(100svh - 3rem);
+  margin-inline: auto;
+  padding-block: 5rem;
+  padding-inline: 5rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  &-canvas {
+    background-color: oklch(0.6 0.15 240);
+    max-width: unset;
+    padding: unset;
+    overflow-y: unset;
+  }
+}
+
+.nav-btn {
+  display: block;
+  height: 3rem;
+}
