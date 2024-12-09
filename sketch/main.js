@@ -1,10 +1,25 @@
-const canvasContainer = document.body.querySelector('.container-canvas');
+const container = document.body.querySelector('.container-canvas');
 
 function setup() {
-  createCanvas(600, 600).parent(canvasContainer);
+  const { width: containerW, height: containerH } =
+    container.getBoundingClientRect();
+  createCanvas(containerW, containerH).parent(container);
+}
+
+function reset() {}
+
+function drawing() {
+  background('black');
+  circle(mouseX, mouseY, 50);
 }
 
 function draw() {
-  background('black');
-  circle(mouseX, mouseY, 50);
+  drawing();
+}
+
+function windowResized() {
+  const { width: containerW, height: containerH } =
+    container.getBoundingClientRect();
+  resizeCanvas(containerW, containerH);
+  drawing();
 }
