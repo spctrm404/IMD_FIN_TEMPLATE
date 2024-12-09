@@ -66,6 +66,8 @@ ol {
   margin-inline: auto;
 
   &-canvas {
+    display: grid;
+    place-items: center center;
     max-width: unset;
     height: 100svh;
     min-height: unset;
@@ -100,7 +102,7 @@ ol {
     a {
       position: absolute;
       top: 0;
-      left: 0;
+      right: 0;
       display: grid;
       place-items: center center;
       width: fit-content;

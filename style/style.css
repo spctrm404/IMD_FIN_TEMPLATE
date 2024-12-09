@@ -65,6 +65,8 @@ ol {
   margin-inline: auto;
 }
 .container-canvas {
+  display: grid;
+  place-items: center center;
   max-width: unset;
   height: 100svh;
   min-height: unset;
@@ -97,7 +99,7 @@ ol {
 .nav-btn-top a {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   display: grid;
   place-items: center center;
   width: -moz-fit-content;
