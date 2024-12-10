@@ -14,11 +14,9 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+html,
 body {
+  scroll-behavior: smooth;
   min-width: 50rem;
   height: 100svh;
   margin: 0;
@@ -76,6 +74,9 @@ ol {
 }
 
 .nav-btn-bottom {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -98,6 +99,9 @@ ol {
   height: 3rem;
 }
 .nav-btn-top a {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   position: absolute;
   top: 0;
   right: 0;
