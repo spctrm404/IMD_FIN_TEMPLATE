@@ -1,43 +1,41 @@
 class Particle {
-  constructor(pos, size, col, angle, vel, angleVel) {
-    this.pos = { x: pos.x, y: pos.y };
-    this.size = { w: size.w, h: size.h };
-    this.col = col;
-    this.angle = angle;
-    this.vel = { x: vel.x, y: vel.y };
-    this.acc = { x: 0, y: 0 };
-    this.angleVel = angleVel;
+  constructor(x, y, w, h, a, colour) {
+    this.pos = createVector(x, y);
+    this.size = createVector(w, h);
+    this.colour = colour;
+    this.a = a;
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
+    this.aVel = 0;
   }
 
-  update(gravity, friction) {
-    this.acc.x += gravity.x;
-    this.acc.y += gravity.y;
+  setVel(x, y) {
+    this.vel.set(x, y);
+  }
 
-    this.vel.x += this.acc.x;
-    this.vel.y += this.acc.y;
+  setAVel(aVel) {
+    this.aVel = aVel;
+  }
 
-    this.pos.x += this.vel.x;
-    this.pos.y += this.vel.y;
+  update(gravity, wind, friction) {
+    const windVector = wind.getVector(this.pos.x, this.pos.y);
+    this.acc.add(windVector);
+    this.acc.add(gravity);
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.vel.mult(1 - friction);
 
-    this.acc.x = 0;
-    this.acc.y = 0;
-
-    this.vel.x *= friction;
-    this.vel.y *= friction;
-
-    this.acc.x = 0;
-    this.acc.y = 0;
-
-    this.angle += this.angleVel;
+    this.a += this.aVel;
   }
 
   render() {
     push();
     translate(this.pos.x, this.pos.y);
-    rotate(this.angle);
+    rotate(this.a);
     noStroke();
-    fill(this.col);
-    rect(this.size.w * -0.5, this.size.h * -0.5, this.size.w, this.size.h);
+    fill(this.colour);
+    rect(this.size.x * -0.5, this.size.y * -0.5, this.size.x, this.size.y);
     pop();
   }
 
