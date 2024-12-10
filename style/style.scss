@@ -13,9 +13,12 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
   min-width: 50rem;
   height: 100svh;
   margin: 0;
@@ -119,6 +122,7 @@ ol {
 }
 
 .title {
+  user-select: none;
   font-size: 2.25rem;
   font-weight: 700;
   line-height: 150%;
@@ -131,6 +135,9 @@ ol {
   font-size: 1.4375rem;
   font-weight: 600;
   line-height: 150%;
+  > * {
+    user-select: none;
+  }
 }
 
 .content {
@@ -139,8 +146,11 @@ ol {
   font-weight: 400;
   line-height: 150%;
 
-  > p:not(:first-child) {
-    margin-top: 0.25rem;
+  > p {
+    user-select: none;
+    &:not(:first-child) {
+      margin-top: 0.25rem;
+    }
   }
 }
 
@@ -149,6 +159,7 @@ ol {
   font-size: 1rem;
   font-weight: 600;
   line-height: 150%;
+  user-select: none;
 }
 
 .references {
@@ -157,11 +168,15 @@ ol {
   font-weight: 400;
   line-height: 150%;
 
-  > li:not(:first-child) {
-    margin-top: 0.5rem;
+  > li {
+    user-select: none;
+    &:not(:first-child) {
+      margin-top: 0.5rem;
+    }
   }
 
   a {
+    user-select: none;
     display: block;
     font-weight: 500;
     color: oklch(50% 0.22 270deg);
@@ -170,10 +185,12 @@ ol {
 
   span {
     &::before {
+      user-select: none;
       content: '“';
     }
 
     &::after {
+      user-select: none;
       content: '”';
     }
   }
