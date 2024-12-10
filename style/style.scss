@@ -60,7 +60,7 @@ ol {
 
 .container {
   max-width: 60rem;
-  min-height: 100svh;
+  min-height: calc(100svh - 3rem);
   padding-block: 5rem calc(5rem + 3rem);
   padding-inline: 5rem;
   margin-inline: auto;
@@ -169,6 +169,12 @@ ol {
   }
 
   span {
-    font-style: italic;
+    &::before {
+      content: '“';
+    }
+
+    &::after {
+      content: '”';
+    }
   }
 }
