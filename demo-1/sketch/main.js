@@ -4,6 +4,9 @@ const aspectW = 4;
 const aspectH = 3;
 // html에서 클래스명이 container-canvas인 첫 엘리먼트: 컨테이너 가져오기.
 const container = document.body.querySelector('.container-canvas');
+// 필요에 따라 이하에 변수 생성.
+
+const confetti = [];
 
 function setup() {
   // 컨테이너의 현재 위치, 크기 등의 정보 가져와서 객체구조분해할당을 통해 너비, 높이 정보를 변수로 추출.
@@ -36,8 +39,26 @@ function setup() {
 function init() {}
 
 function draw() {
-  background('white');
-  circle(mouseX, mouseY, 50);
+  background('black');
+  for (let idx = confetti.length - 1; idx >= 0; idx--) {
+    confetti[idx].update({ x: 0, y: 1 }, 0.9);
+    confetti[idx].render();
+    if (confetti[idx].isDead()) {
+      confetti.splice(idx, 1);
+    }
+  }
+  console.log(confetti.length);
+}
+
+function mousePressed() {
+  confetti.push(
+    new Confetti({ x: mouseX, y: mouseY }, 100, [
+      '#640D5F',
+      '#D91656',
+      '#EB5B00',
+      '#FFB200',
+    ])
+  );
 }
 
 function windowResized() {

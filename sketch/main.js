@@ -4,6 +4,7 @@ const aspectW = 4;
 const aspectH = 3;
 // html에서 클래스명이 container-canvas인 첫 엘리먼트: 컨테이너 가져오기.
 const container = document.body.querySelector('.container-canvas');
+// 필요에 따라 이하에 변수 생성.
 
 function setup() {
   // 컨테이너의 현재 위치, 크기 등의 정보 가져와서 객체구조분해할당을 통해 너비, 높이 정보를 변수로 추출.
