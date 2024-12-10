@@ -11,18 +11,18 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  user-select: none;
 }
 
 html {
   scroll-behavior: smooth;
   height: 100%;
+  overflow-y: hidden;
 }
 
 body {
   min-width: 50rem;
-  height: 100svh;
   margin: 0;
-  overflow-y: hidden;
   font-family: 'Pretendard Variable', sans-serif;
   color: oklch(32% 0 0deg);
 }
@@ -79,7 +79,6 @@ ol {
 
 .nav-btn {
   &-bottom {
-    user-select: none;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -102,7 +101,6 @@ ol {
     height: 3rem;
 
     a {
-      user-select: none;
       position: absolute;
       top: 0;
       right: 0;
@@ -122,7 +120,6 @@ ol {
 }
 
 .title {
-  user-select: none;
   font-size: 2.25rem;
   font-weight: 700;
   line-height: 150%;
@@ -135,9 +132,6 @@ ol {
   font-size: 1.4375rem;
   font-weight: 600;
   line-height: 150%;
-  > * {
-    user-select: none;
-  }
 }
 
 .content {
@@ -146,11 +140,8 @@ ol {
   font-weight: 400;
   line-height: 150%;
 
-  > p {
-    user-select: none;
-    &:not(:first-child) {
-      margin-top: 0.25rem;
-    }
+  > p:not(:first-child) {
+    margin-top: 0.25rem;
   }
 }
 
@@ -159,7 +150,6 @@ ol {
   font-size: 1rem;
   font-weight: 600;
   line-height: 150%;
-  user-select: none;
 }
 
 .references {
@@ -168,15 +158,11 @@ ol {
   font-weight: 400;
   line-height: 150%;
 
-  > li {
-    user-select: none;
-    &:not(:first-child) {
-      margin-top: 0.5rem;
-    }
+  > li:not(:first-child) {
+    margin-top: 0.5rem;
   }
 
   a {
-    user-select: none;
     display: block;
     font-weight: 500;
     color: oklch(50% 0.22 270deg);
@@ -185,12 +171,10 @@ ol {
 
   span {
     &::before {
-      user-select: none;
       content: '“';
     }
 
     &::after {
-      user-select: none;
       content: '”';
     }
   }

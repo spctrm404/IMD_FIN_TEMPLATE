@@ -86,6 +86,12 @@ function mouseReleased() {
   );
 }
 
+function keyPressed() {
+  if (key === 'o' || key === 'O') {
+    console.log(confetti.length);
+  }
+}
+
 function windowResized() {
   // 컨테이너의 현재 위치, 크기 등의 정보 가져와서 객체구조분해할당을 통해 너비, 높이 정보를 변수로 추출.
   const { width: containerW, height: containerH } =
