@@ -37,7 +37,7 @@ function gotHands(results) {
 }
 
 function videoScale() {
-  return width / height > videoW / videoH ? height / videoH : width / videoW;
+  return width / height > videoW / videoH ? width / videoW : height / videoH;
 }
 
 function preload() {
@@ -129,7 +129,7 @@ function setup() {
   console.log(stack);
   console.log(walls);
 
-  handBody = Bodies.circle(-10000, -10000, 30, { isStatic: true });
+  handBody = Bodies.circle(-10000, -10000, 30);
   Composite.add(world, handBody);
   console.log(handBody);
 }
@@ -162,9 +162,10 @@ function draw() {
         currentVideoZero.y + hands[0].keypoints[8].y * currentVideoScale
       )
     );
-  } else {
-    Body.setPosition(handBody, Vector.create(-10000, -10000));
   }
+  // else {
+  //   Body.setPosition(handBody, Vector.create(-10000, -10000));
+  // }
   for (let i = 0; i < hands.length; i++) {
     let hand = hands[i];
     for (let j = 0; j < hand.keypoints.length; j++) {
@@ -195,6 +196,7 @@ function draw() {
     });
     endShape(CLOSE);
   });
+  stroke(255, 0, 0);
   beginShape();
   handBody.vertices.forEach((aVertex) => {
     vertex(aVertex.x, aVertex.y);
