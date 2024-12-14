@@ -67,13 +67,12 @@ const thickness = 500;
 let walls;
 let mouse, mouseConstraint;
 
+let mShape;
+
 function init() {
   Common.setDecomp(decomp);
   engine = Engine.create();
   world = engine.world;
-
-  runner = Runner.create();
-  Runner.run(runner, engine);
 
   const radius = 50,
     innerRadius = 30,
@@ -87,11 +86,12 @@ function init() {
   stack = Composites.stack(x, y, columns, rows, columnGap, rowGap, (x, y) => {
     // return Bodies.circle(x, y, radius);
     // const randomConcave = concavePolygon(Math.floor(random(3, 6 + 1)), radius);
-    // const randomConcave = concavePolygon(4, radius);
-    // return Bodies.fromVertices(x, y, randomConcave);
-    const star = starPolygon(5, radius, innerRadius);
-    return Bodies.fromVertices(x, y, star);
+    const randomConcave = concavePolygon(4, radius);
+    return Bodies.fromVertices(x, y, randomConcave);
+    // const star = starPolygon(5, radius, innerRadius);
+    // return Bodies.fromVertices(x, y, star);
   });
+  mShape = new MShape(stack.bodies[0]);
   Composite.add(world, stack);
   console.log(stack);
 
@@ -123,6 +123,9 @@ function init() {
     },
   });
   Composite.add(world, mouseConstraint);
+
+  runner = Runner.create();
+  Runner.run(runner, engine);
 }
 
 function resize() {
@@ -156,6 +159,9 @@ function draw() {
       }
     });
   });
+
+  stroke('red');
+  mShape.render();
 }
 
 function windowResized() {
