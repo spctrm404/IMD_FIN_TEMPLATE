@@ -1,24 +1,25 @@
 class MatterShape {
   constructor(body) {
     this.body = body;
-    let [, ...parts] = this.body.parts.map(({ vertices }) =>
-      vertices.map(({ x, y }) => [x, y])
-    );
-    this.shape = MatterShape.restoreConcave(parts).regions;
-    console.log('PolyBool', this.shape);
-    this.shape.forEach((aPath) => {
-      aPath.forEach((aPoint) => {
-        aPoint[0] = aPoint[0] - this.body.position.x;
-        aPoint[1] = aPoint[1] - this.body.position.y;
-      });
-    });
-    console.log('MatterShape', this.shape);
+    const [convexHull, ...parts] = this.body.parts;
+    this.uniqueEdges = MatterShape.extractUniqueEdges(convexHull, parts);
+    console.log('this.uniqueEdges', this.uniqueEdges);
   }
 
-  render() {
+  renderHull() {
+    for (let idx = 0; idx < this.uniqueEdges.length; idx++) {
+      // const begin = this.uniqueEdges[idx].begin;
+      // const end = this.uniqueEdges[idx].end;
+      const { begin, end } = this.uniqueEdges[idx];
+      stroke(255, 0, 0);
+      line(begin.x, begin.y, end.x, end.y);
+    }
+  }
+
+  rederParts() {
     push();
     translate(this.body.position.x, this.body.position.y);
-    rotate(this.body.parts[0].angle);
+    rotate(this.body.angle);
     beginShape();
     this.shape.forEach((aPath) => {
       aPath.forEach((aPoint) => {
@@ -29,37 +30,37 @@ class MatterShape {
     pop();
   }
 
-  static restoreConcave(parts) {
-    const [first, ...rest] = parts;
-    const firstPolygon = {
-      regions: [first],
-      inverted: false,
-    };
-    let segments = PolyBool.segments(firstPolygon);
-    if (!rest) return PolyBool.polygon(segments);
-    for (let idx = 0; idx < rest.length; idx++) {
-      const aRestPolygon = {
-        regions: [rest[idx]],
-        inverted: false,
-      };
-      const aRest = PolyBool.segments(aRestPolygon);
-      const combine = PolyBool.combine(segments, aRest);
-      segments = PolyBool.selectUnion(combine);
-    }
-    return PolyBool.polygon(segments);
+  static arePointsEqual(pointA, pointB) {
+    return pointA.x === pointB.x && pointA.y === pointB.y;
   }
 
-  // static restoreConcave(parts) {
-  //   const [part0, ...rest] = parts;
-  //   if (!rest) return part0;
-  //   const polyA = {
-  //     regions: [part0],
-  //     inverted: false,
-  //   };
-  //   const polyB = {
-  //     regions: rest,
-  //     inverted: false,
-  //   };
-  //   return PolyBool.union(polyA, polyB);
-  // }
+  static areEdgesEqual(edgeA, edgeB) {
+    return (
+      (MatterShape.arePointsEqual(edgeA.begin, edgeB.begin) &&
+        MatterShape.arePointsEqual(edgeA.end, edgeB.end)) ||
+      (MatterShape.arePointsEqual(edgeA.begin, edgeB.end) &&
+        MatterShape.arePointsEqual(edgeA.end, edgeB.begin))
+    );
+  }
+
+  static extractUniqueEdges(convexHull, parts) {
+    const uniqueEdges = [];
+    parts.forEach((aPart) => {
+      for (let pointIdx = 0; pointIdx < aPart.vertices.length; pointIdx++) {
+        const current = aPart.vertices[pointIdx];
+        const next = aPart.vertices[(pointIdx + 1) % aPart.vertices.length];
+        const newEdge = { begin: current, end: next };
+        let areEqual = false;
+        for (let edgeIdx = 0; edgeIdx < uniqueEdges.length; edgeIdx++) {
+          areEqual = MatterShape.areEdgesEqual(uniqueEdges[edgeIdx], newEdge);
+          if (areEqual) {
+            uniqueEdges.splice(edgeIdx, 1);
+            break;
+          }
+        }
+        if (!areEqual) uniqueEdges.push(newEdge);
+      }
+    });
+    return uniqueEdges;
+  }
 }

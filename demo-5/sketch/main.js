@@ -69,6 +69,7 @@ let walls;
 let mouse, mouseConstraint;
 
 let stack;
+let matterShapes = [];
 const svgPaths = [
   './svg/iconmonstr-puzzle-icon.svg',
   './svg/iconmonstr-check-mark-8-icon.svg',
@@ -77,21 +78,15 @@ const svgPaths = [
   './svg/iconmonstr-user-icon.svg',
   // './svg/svg.svg',
 ];
-let svgBodies = [];
-let matterShapes = [];
 
 const select = (root, selector) => {
   return Array.prototype.slice.call(root.querySelectorAll(selector));
 };
 
-const loadSvg = (url) => {
-  return fetch(url)
-    .then(function (response) {
-      return response.text();
-    })
-    .then(function (raw) {
-      return new window.DOMParser().parseFromString(raw, 'image/svg+xml');
-    });
+const loadSvg = async (url) => {
+  const response = await fetch(url);
+  const raw = await response.text();
+  return new window.DOMParser().parseFromString(raw, 'image/svg+xml');
 };
 
 const init = () => {
@@ -139,16 +134,19 @@ const init = () => {
     width * 0.5 - (columns - 1) * radius - (columns - 1) * 0.5 * columnGap;
   const y = height * 0.5 - (rows - 1) * radius - (rows - 1) * 0.5 * rowGap;
   stack = Composites.stack(x, y, columns, rows, columnGap, rowGap, (x, y) => {
-    const randomConcave = concavePolygon(4, radius);
+    // const randomConcave = concavePolygon(4, radius);
+    const randomConcave = starPolygon(5, radius, innerRadius);
     return Bodies.fromVertices(x, y, randomConcave);
   });
   console.log('stack', stack);
   Composite.add(world, stack);
 
+  matterShapes.push(new MatterShape(stack.bodies[0]));
+
   svgPaths.forEach((aSvgPath, svgPathIdx) => {
     loadSvg(aSvgPath).then((root) => {
       const vertices = select(root, 'path').map((aPath) => {
-        return Vertices.scale(Svg.pathToVertices(aPath, 30), 0.5, 0.5);
+        return Vertices.scale(Svg.pathToVertices(aPath, 15), 0.5, 0.5);
       });
       const body = Bodies.fromVertices(
         200 + svgPathIdx * 200,
@@ -161,13 +159,11 @@ const init = () => {
         },
         true
       );
-      matterShapes.push(new MatterShape(body));
       Composite.add(world, body);
-      svgBodies.push(body);
+
+      // matterShapes.push(new MatterShape(body));
     });
   });
-  console.log('svgBodies', svgBodies);
-  Composite.add(world, svgBodies);
 
   runner = Runner.create();
   Runner.run(runner, engine);
@@ -202,23 +198,10 @@ function draw() {
       }
     });
   });
-  svgBodies.forEach((aBody) => {
-    aBody.parts.forEach((aPart, idx) => {
-      if (idx !== 0) {
-        beginShape();
-        aPart.vertices.forEach((aVertex) => {
-          vertex(aVertex.x, aVertex.y);
-        });
-        endShape(CLOSE);
-      }
-    });
-  });
 
-  noStroke();
-  fill(0, 255, 0);
-  // stroke('red');
+  stroke('red');
   matterShapes.forEach((aMatterShape) => {
-    aMatterShape.render();
+    aMatterShape.renderHull();
   });
 }
 
